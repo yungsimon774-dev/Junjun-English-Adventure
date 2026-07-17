@@ -1,29 +1,24 @@
-峻峻英語大冒險 V1
+峻峻英語大冒險 V1.2｜外接自然拼讀正式版
 
-使用方法：
-1. 解壓縮 ZIP。
-2. 點擊 index.html。
-3. iPhone/iPad 建議用 Safari 打開，再選「分享」→「加入主畫面」。
-4. 必須連接網絡，因為拼讀、真人發音、故事和遊戲來自成熟網站。
-5. 學習進度保存在當前瀏覽器；清除瀏覽資料後會消失。
+保留並確認：
+- Starfall 26 個字母音
+- Oxford Owl 44 個 pure sounds
+- Phonics Bloom Phase 2
+- Starfall CVC 合音拼讀
+- British Council 單字遊戲與故事
+- Word Battle、每日任務、星星、徽章、爸爸模式
 
-本版本：
-- 遊戲化首頁與每日三任務
-- Starfall 拼讀入口
-- British Council 兒童遊戲、單字及故事
-- Cambridge 真人英美發音
-- Oxford Owl 拼讀資源
-- 本機 Word Battle
-- 星星、等級、徽章和爸爸模式
+本次新增：
+- 正確「峻」字 App 圖示
+- iPhone/iPad 加入主畫面的正式名稱
+- PWA manifest 與更新機制
+- 修正重複點同一任務會無限加星
+- 單字戰鬥每日前 5 題計星，避免無限刷星
 
-注意：
-外部網站可能更改頁面、要求登入，或在新分頁打開。
-
-
-V1.1 外接自然拼讀版更新：
-1. 名稱改為「峻峻英語大冒險」。
-2. 新增 Starfall ABCs：26 個字母單音。
-3. 新增 Oxford Owl：44 個 pure sounds 示範。
-4. 新增 Phonics Bloom Phase 2 單音遊戲。
-5. 保留 Starfall CVC 合音拼讀。
-6. 所有自然拼讀內容均為外接網站，不內建課程。
+上傳方法：
+1. 解壓縮。
+2. 將 7 個檔案全部上傳到 GitHub 的 Junjun-English-Adventure 倉庫根目錄。
+3. index.html 選擇覆蓋原檔。
+4. 等 GitHub Pages 約 1–3 分鐘更新。
+5. 刪除手機桌面舊圖示。
+6. Safari 重新打開網站，分享 → 加入主畫面。
