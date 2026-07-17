@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7c3aed">
+<title>俊俊英語大冒險</title>
+<style>
+:root{--bg:#f4f1ff;--card:#fff;--ink:#24173b;--muted:#6f6580;--purple:#7c3aed;--gold:#f5b942;--green:#20a66a;--red:#e14f62}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#6d3ce8 0,#9a6cff 230px,var(--bg) 230px);color:var(--ink)}
+button,a{font:inherit}.wrap{max-width:760px;margin:auto;padding:18px 16px 90px}.hero{color:#fff;padding:8px 4px 18px}
+.hero h1{margin:6px 0;font-size:30px}.hero p{margin:5px 0;opacity:.9}.status{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+.pill{background:rgba(255,255,255,.18);backdrop-filter:blur(8px);padding:8px 12px;border-radius:999px;font-weight:700}
+.panel{background:var(--card);border-radius:24px;padding:17px;box-shadow:0 14px 35px rgba(45,22,98,.13);margin:14px 0}
+.panel h2{font-size:20px;margin:0 0 12px}.mission{display:grid;gap:10px}
+.task{display:flex;align-items:center;gap:12px;padding:12px;border:2px solid #eee9fa;border-radius:17px;cursor:pointer}
+.task.done{border-color:#9de2c3;background:#effbf5}.check{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#eee9fa;font-weight:900}.task.done .check{background:var(--green);color:white}
+.task b{display:block}.task small{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{min-height:135px;border:0;border-radius:21px;padding:15px;text-align:left;color:white;cursor:pointer;box-shadow:0 10px 20px rgba(49,31,84,.12);text-decoration:none;display:flex;flex-direction:column;justify-content:space-between}
+.card .icon{font-size:37px}.card b{font-size:18px}.card small{opacity:.9;line-height:1.35}
+.c1{background:linear-gradient(135deg,#ff7657,#ff9e55)}.c2{background:linear-gradient(135deg,#3977ef,#55a9ff)}
+.c3{background:linear-gradient(135deg,#0ca678,#4bc98e)}.c4{background:linear-gradient(135deg,#7c3aed,#aa70ff)}
+.c5{background:linear-gradient(135deg,#e14f62,#ff7f9b)}.c6{background:linear-gradient(135deg,#d38b00,#ffc84e);color:#3b2b00}
+.gamebox{text-align:center;background:linear-gradient(145deg,#25143f,#48226f);color:#fff}.monster{font-size:72px;margin:4px}.word{font-size:38px;font-weight:900;letter-spacing:4px;margin:8px}
+.answers{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.ans{border:0;border-radius:14px;padding:12px 5px;background:#fff;color:#2a1941;font-weight:900;cursor:pointer}
+.msg{min-height:25px;margin-top:10px;font-weight:800}.resource-note{font-size:13px;color:var(--muted);line-height:1.55}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.93);backdrop-filter:blur(13px);border-top:1px solid #eee;padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:10px}
+.nav button{border:0;background:#eee9fa;padding:10px 16px;border-radius:999px;font-weight:800;color:#4d3971}.nav button.active{background:var(--purple);color:#fff}
+.page{display:none}.page.active{display:block}.badge-row{display:flex;gap:10px;overflow:auto;padding-bottom:4px}.badge{min-width:112px;padding:13px;border-radius:16px;background:#f7f3ff;text-align:center}.badge span{font-size:31px;display:block}.progress{height:13px;background:#eee9fa;border-radius:999px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#7c3aed,#c17aff);width:0}
+.parent-line{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #eee}.reset{border:0;background:#fff0f2;color:#b9233b;padding:10px 13px;border-radius:12px;font-weight:800}
+@media(min-width:620px){.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="home" class="page active">
+  <header class="hero">
+    <div>🚀 JUNJUN ENGLISH QUEST</div>
+    <h1>俊俊英語大冒險</h1>
+    <p>每天玩 15 分鐘，完成任務、打怪、開寶箱。</p>
+    <div class="status"><div class="pill">⭐ 星星 <span id="stars">0</span></div><div class="pill">🔥 連續 <span id="streak">1</span> 天</div><div class="pill">🏅 Lv.<span id="level">1</span></div></div>
+  </header>
+
+  <div class="panel">
+    <h2>🎯 今日三個任務</h2>
+    <div class="mission">
+      <div class="task" data-task="phonics"><div class="check">1</div><div><b>拼讀探險 5 分鐘</b><small>進入成熟 Phonics 課程</small></div></div>
+      <div class="task" data-task="game"><div class="check">2</div><div><b>打敗 5 隻單字怪</b><small>在下面完成 Word Battle</small></div></div>
+      <div class="task" data-task="story"><div class="check">3</div><div><b>看一個英文故事</b><small>British Council 兒童故事</small></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>🗺️ 冒險地圖</h2>
+    <div class="grid">
+      <a class="card c1 external phonics-link" href="https://www.starfall.com/h/learn-to-read/" target="_blank"><span class="icon">🦖</span><div><b>恐龍拼讀島</b><br><small>Starfall：字母音、短母音與拼讀遊戲</small></div></a>
+      <a class="card c2" href="https://learnenglishkids.britishcouncil.org/grammar-vocabulary/word-games" target="_blank"><span class="icon">⚔️</span><div><b>單字競技場</b><br><small>British Council 正式兒童單字遊戲</small></div></a>
+      <a class="card c3 story-link" href="https://learnenglishkids.britishcouncil.org/listen-watch/short-stories" target="_blank"><span class="icon">📖</span><div><b>魔法故事森林</b><br><small>真人內容、動畫與兒童故事</small></div></a>
+      <a class="card c4" href="https://dictionary.cambridge.org/pronunciation/" target="_blank"><span class="icon">🎧</span><div><b>真人發音基地</b><br><small>Cambridge 英式、美式真人錄音</small></div></a>
+      <a class="card c5" href="https://learnenglishkids.britishcouncil.org/fun-games/games" target="_blank"><span class="icon">🎮</span><div><b>英語遊戲城</b><br><small>成熟網站中的免費英語遊戲</small></div></a>
+      <a class="card c6" href="https://home.oxfordowl.co.uk/reading/phonics/" target="_blank"><span class="icon">🦉</span><div><b>牛津貓頭鷹</b><br><small>Oxford Owl 家庭拼讀指引與閱讀資源</small></div></a>
+    </div>
+  </div>
+
+  <div class="panel gamebox" id="battle">
+    <h2>👾 Word Battle</h2>
+    <div class="monster" id="monster">👾</div>
+    <div>找出正確的中文意思</div>
+    <div class="word" id="word">DOG</div>
+    <div class="answers" id="answers"></div>
+    <div class="msg" id="msg">連續答對 5 題，完成今日任務！</div>
+  </div>
+  <p class="resource-note">說明：真人發音、正式故事及拼讀內容直接使用 Cambridge、British Council、Starfall、Oxford Owl；本 App 只負責入口、遊戲化任務及本機進度記錄。部分網站可能要求登入或另開新頁。</p>
+</section>
+
+<section id="rewards" class="page">
+  <header class="hero"><h1>我的寶物庫</h1><p>完成任務便會獲得星星與徽章。</p></header>
+  <div class="panel"><h2>🏆 升級進度</h2><div class="progress"><div class="bar" id="bar"></div></div><p id="progressText"></p></div>
+  <div class="panel"><h2>🎖️ 徽章</h2><div class="badge-row">
+    <div class="badge"><span>🦖</span><b>拼讀獵人</b><small>完成拼讀任務</small></div>
+    <div class="badge"><span>⚔️</span><b>單字勇士</b><small>答對五題</small></div>
+    <div class="badge"><span>📚</span><b>故事探險家</b><small>完成故事任務</small></div>
+  </div></div>
+</section>
+
+<section id="parent" class="page">
+  <header class="hero"><h1>爸爸模式</h1><p>資料只保存在這部裝置的瀏覽器內。</p></header>
+  <div class="panel">
+    <h2>📊 今日紀錄</h2>
+    <div class="parent-line"><span>拼讀任務</span><b id="pPhonics">未完成</b></div>
+    <div class="parent-line"><span>單字戰鬥</span><b id="pGame">0 / 5</b></div>
+    <div class="parent-line"><span>故事任務</span><b id="pStory">未完成</b></div>
+    <div class="parent-line"><span>累積星星</span><b id="pStars">0</b></div>
+    <p><button class="reset" id="reset">重設今日紀錄</button></p>
+  </div>
+</section>
+</div>
+
+<nav class="nav">
+<button class="active" data-page="home">🏠 冒險</button>
+<button data-page="rewards">🏆 寶物</button>
+<button data-page="parent">👨‍👦 爸爸</button>
+</nav>
+
+<script>
+const words=[
+ {w:"DOG",a:"狗",x:["門","魚"]},{w:"CAT",a:"貓",x:["帽子","車"]},{w:"APPLE",a:"蘋果",x:["飛機","螞蟻"]},
+ {w:"BALL",a:"球",x:["書","鳥"]},{w:"FISH",a:"魚",x:["腳","花"]},{w:"SUN",a:"太陽",x:["兒子","襪子"]},
+ {w:"BOOK",a:"書",x:["靴子","船"]},{w:"CAR",a:"汽車",x:["貓","蛋糕"]},{w:"STAR",a:"星星",x:["樓梯","故事"]},
+ {w:"MILK",a:"牛奶",x:["月亮","老鼠"]}
+];
+let state=JSON.parse(localStorage.getItem("junjunEnglishV1")||'{"stars":0,"phonics":false,"story":false,"wins":0}');
+let current=null;
+function save(){localStorage.setItem("junjunEnglishV1",JSON.stringify(state));render()}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function next(){
+ current=words[Math.floor(Math.random()*words.length)];
+ document.getElementById("word").textContent=current.w;
+ const box=document.getElementById("answers"); box.innerHTML="";
+ shuffle([current.a,...current.x]).forEach(v=>{
+   const b=document.createElement("button"); b.className="ans"; b.textContent=v;
+   b.onclick=()=>answer(v,b); box.appendChild(b);
+ });
+}
+function answer(v,b){
+ if(v===current.a){
+   state.wins++; state.stars+=2; document.getElementById("msg").textContent="🎉 答對！怪物受到攻擊！";
+   document.getElementById("monster").textContent=state.wins>=5?"💥":"😵";
+   save(); setTimeout(()=>{document.getElementById("monster").textContent="👾";next()},650);
+ }else{
+   document.getElementById("msg").textContent="再想一想，你可以的！";
+   b.style.opacity=".35";
+ }
+}
+document.querySelectorAll(".phonics-link").forEach(a=>a.addEventListener("click",()=>{state.phonics=true;state.stars+=5;save()}));
+document.querySelectorAll(".story-link").forEach(a=>a.addEventListener("click",()=>{state.story=true;state.stars+=5;save()}));
+document.querySelectorAll(".task").forEach(t=>t.onclick=()=>{
+ const k=t.dataset.task;
+ if(k==="phonics") document.querySelector(".phonics-link").click();
+ if(k==="story") document.querySelector(".story-link").click();
+ if(k==="game") document.getElementById("battle").scrollIntoView({behavior:"smooth"});
+});
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+document.getElementById("reset").onclick=()=>{state={stars:0,phonics:false,story:false,wins:0};save();next()};
+function render(){
+ document.getElementById("stars").textContent=state.stars;
+ const level=Math.floor(state.stars/20)+1; document.getElementById("level").textContent=level;
+ const flags={phonics:state.phonics,game:state.wins>=5,story:state.story};
+ document.querySelectorAll(".task").forEach(t=>t.classList.toggle("done",flags[t.dataset.task]));
+ document.getElementById("pPhonics").textContent=state.phonics?"已完成":"未完成";
+ document.getElementById("pStory").textContent=state.story?"已完成":"未完成";
+ document.getElementById("pGame").textContent=Math.min(state.wins,5)+" / 5";
+ document.getElementById("pStars").textContent=state.stars;
+ document.getElementById("bar").style.width=(state.stars%20)/20*100+"%";
+ document.getElementById("progressText").textContent="再取得 "+(20-state.stars%20)+" 顆星升到下一級";
+}
+render();next();
+</script>
+</body>
+</html>
