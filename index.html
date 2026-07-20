@@ -75,7 +75,7 @@ button,a{font:inherit}.wrap{max-width:760px;margin:auto;padding:18px 16px 90px}.
     <div>找出正确的中文意思</div>
     <div class="word" id="word">DOG</div>
     <div class="answers" id="answers"></div>
-    <div class="msg" id="msg">连续答对 5 题，完成今日任务！</div>
+    <div class="msg" id="msg">答对 5 题，完成今日任务！词库共 300 词。</div>
   </div>
   <p class="resource-note">说明：自然拼读及故事内容全部外接成熟网站，包括 Starfall、Oxford Owl、Phonics Bloom、British Council；本 App 只负责入口、游戏化任务及本机进度记录。部分网站可能要求登录或另开新页。</p>
 </section>
@@ -98,6 +98,9 @@ button,a{font:inherit}.wrap{max-width:760px;margin:auto;padding:18px 16px 90px}.
     <div class="parent-line"><span>单词战斗</span><b id="pGame">0 / 5</b></div>
     <div class="parent-line"><span>故事任务</span><b id="pStory">未完成</b></div>
     <div class="parent-line"><span>累计星星</span><b id="pStars">0</b></div>
+    <div class="parent-line"><span>词库总量</span><b id="pTotal">300</b></div>
+    <div class="parent-line"><span>已学单词</span><b id="pLearned">0</b></div>
+    <div class="parent-line"><span>答题正确率</span><b id="pAccuracy">0%</b></div>
     <p><button class="reset" id="reset">重置今日记录</button></p>
   </div>
 </section>
@@ -110,62 +113,64 @@ button,a{font:inherit}.wrap{max-width:760px;margin:auto;padding:18px 16px 90px}.
 </nav>
 
 <script>
-const words=[
- {w:"DOG",a:"狗",x:["门","魚"]},{w:"CAT",a:"猫",x:["帽子","車"]},{w:"APPLE",a:"苹果",x:["飞机","蚂蚁"]},
- {w:"BALL",a:"球",x:["书","鸟"]},{w:"FISH",a:"魚",x:["脚","花"]},{w:"SUN",a:"太阳",x:["儿子","袜子"]},
- {w:"BOOK",a:"书",x:["靴子","船"]},{w:"CAR",a:"汽车",x:["猫","蛋糕"]},{w:"STAR",a:"星星",x:["楼梯","故事"]},
- {w:"MILK",a:"牛奶",x:["月亮","老鼠"]}
-];
-let state=JSON.parse(localStorage.getItem("junjunEnglishV13")||localStorage.getItem("junjunEnglishV1")||'{"stars":0,"phonics":false,"story":false,"wins":0}');
-let current=null;
-function save(){localStorage.setItem("junjunEnglishV13",JSON.stringify(state));render()}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+const words=[{"w":"DOG","a":"狗","c":"动物"},{"w":"CAT","a":"猫","c":"动物"},{"w":"FISH","a":"鱼","c":"动物"},{"w":"BIRD","a":"鸟","c":"动物"},{"w":"DUCK","a":"鸭子","c":"动物"},{"w":"PIG","a":"猪","c":"动物"},{"w":"COW","a":"奶牛","c":"动物"},{"w":"HORSE","a":"马","c":"动物"},{"w":"SHEEP","a":"绵羊","c":"动物"},{"w":"GOAT","a":"山羊","c":"动物"},{"w":"RABBIT","a":"兔子","c":"动物"},{"w":"MOUSE","a":"老鼠","c":"动物"},{"w":"LION","a":"狮子","c":"动物"},{"w":"TIGER","a":"老虎","c":"动物"},{"w":"BEAR","a":"熊","c":"动物"},{"w":"MONKEY","a":"猴子","c":"动物"},{"w":"PANDA","a":"熊猫","c":"动物"},{"w":"ELEPHANT","a":"大象","c":"动物"},{"w":"GIRAFFE","a":"长颈鹿","c":"动物"},{"w":"ZEBRA","a":"斑马","c":"动物"},{"w":"APPLE","a":"苹果","c":"食物"},{"w":"BANANA","a":"香蕉","c":"食物"},{"w":"ORANGE","a":"橙子","c":"食物"},{"w":"PEAR","a":"梨","c":"食物"},{"w":"GRAPE","a":"葡萄","c":"食物"},{"w":"MANGO","a":"芒果","c":"食物"},{"w":"LEMON","a":"柠檬","c":"食物"},{"w":"PEACH","a":"桃子","c":"食物"},{"w":"WATERMELON","a":"西瓜","c":"食物"},{"w":"STRAWBERRY","a":"草莓","c":"食物"},{"w":"BREAD","a":"面包","c":"食物"},{"w":"RICE","a":"米饭","c":"食物"},{"w":"NOODLES","a":"面条","c":"食物"},{"w":"EGG","a":"鸡蛋","c":"食物"},{"w":"CAKE","a":"蛋糕","c":"食物"},{"w":"COOKIE","a":"饼干","c":"食物"},{"w":"CHEESE","a":"奶酪","c":"食物"},{"w":"SOUP","a":"汤","c":"食物"},{"w":"MEAT","a":"肉","c":"食物"},{"w":"CHICKEN","a":"鸡肉","c":"食物"},{"w":"WATER","a":"水","c":"饮料"},{"w":"MILK","a":"牛奶","c":"饮料"},{"w":"JUICE","a":"果汁","c":"饮料"},{"w":"TEA","a":"茶","c":"饮料"},{"w":"COFFEE","a":"咖啡","c":"饮料"},{"w":"COLA","a":"可乐","c":"饮料"},{"w":"LEMONADE","a":"柠檬水","c":"饮料"},{"w":"YOGURT","a":"酸奶","c":"饮料"},{"w":"SMOOTHIE","a":"冰沙","c":"饮料"},{"w":"COCOA","a":"可可","c":"饮料"},{"w":"BOTTLE","a":"瓶子","c":"饮料"},{"w":"CUP","a":"杯子","c":"饮料"},{"w":"GLASS","a":"玻璃杯","c":"饮料"},{"w":"STRAW","a":"吸管","c":"饮料"},{"w":"DRINK","a":"喝","c":"饮料"},{"w":"THIRSTY","a":"口渴的","c":"饮料"},{"w":"HOT","a":"热的","c":"饮料"},{"w":"COLD","a":"冷的","c":"饮料"},{"w":"SWEET","a":"甜的","c":"饮料"},{"w":"FRESH","a":"新鲜的","c":"饮料"},{"w":"FATHER","a":"爸爸","c":"家庭"},{"w":"MOTHER","a":"妈妈","c":"家庭"},{"w":"DAD","a":"爸爸","c":"家庭"},{"w":"MOM","a":"妈妈","c":"家庭"},{"w":"PARENT","a":"家长","c":"家庭"},{"w":"SON","a":"儿子","c":"家庭"},{"w":"DAUGHTER","a":"女儿","c":"家庭"},{"w":"BROTHER","a":"兄弟","c":"家庭"},{"w":"SISTER","a":"姐妹","c":"家庭"},{"w":"BABY","a":"婴儿","c":"家庭"},{"w":"GRANDFATHER","a":"爷爷","c":"家庭"},{"w":"GRANDMOTHER","a":"奶奶","c":"家庭"},{"w":"UNCLE","a":"叔叔","c":"家庭"},{"w":"AUNT","a":"阿姨","c":"家庭"},{"w":"COUSIN","a":"表兄妹","c":"家庭"},{"w":"FAMILY","a":"家庭","c":"家庭"},{"w":"HOME","a":"家","c":"家庭"},{"w":"HOUSE","a":"房子","c":"家庭"},{"w":"ROOM","a":"房间","c":"家庭"},{"w":"LOVE","a":"爱","c":"家庭"},{"w":"SCHOOL","a":"学校","c":"学校"},{"w":"CLASS","a":"班级","c":"学校"},{"w":"TEACHER","a":"老师","c":"学校"},{"w":"STUDENT","a":"学生","c":"学校"},{"w":"BOOK","a":"书","c":"学校"},{"w":"PEN","a":"钢笔","c":"学校"},{"w":"PENCIL","a":"铅笔","c":"学校"},{"w":"ERASER","a":"橡皮","c":"学校"},{"w":"RULER","a":"尺子","c":"学校"},{"w":"DESK","a":"书桌","c":"学校"},{"w":"CHAIR","a":"椅子","c":"学校"},{"w":"BAG","a":"书包","c":"学校"},{"w":"PAPER","a":"纸","c":"学校"},{"w":"BOARD","a":"黑板","c":"学校"},{"w":"LESSON","a":"课程","c":"学校"},{"w":"HOMEWORK","a":"作业","c":"学校"},{"w":"QUESTION","a":"问题","c":"学校"},{"w":"ANSWER","a":"答案","c":"学校"},{"w":"READ","a":"阅读","c":"学校"},{"w":"WRITE","a":"书写","c":"学校"},{"w":"RED","a":"红色","c":"颜色形状"},{"w":"BLUE","a":"蓝色","c":"颜色形状"},{"w":"YELLOW","a":"黄色","c":"颜色形状"},{"w":"GREEN","a":"绿色","c":"颜色形状"},{"w":"PURPLE","a":"紫色","c":"颜色形状"},{"w":"ORANGE","a":"橙色","c":"颜色形状"},{"w":"PINK","a":"粉色","c":"颜色形状"},{"w":"BLACK","a":"黑色","c":"颜色形状"},{"w":"WHITE","a":"白色","c":"颜色形状"},{"w":"BROWN","a":"棕色","c":"颜色形状"},{"w":"GRAY","a":"灰色","c":"颜色形状"},{"w":"CIRCLE","a":"圆形","c":"颜色形状"},{"w":"SQUARE","a":"正方形","c":"颜色形状"},{"w":"TRIANGLE","a":"三角形","c":"颜色形状"},{"w":"RECTANGLE","a":"长方形","c":"颜色形状"},{"w":"STAR","a":"星形","c":"颜色形状"},{"w":"HEART","a":"心形","c":"颜色形状"},{"w":"LINE","a":"线","c":"颜色形状"},{"w":"DOT","a":"点","c":"颜色形状"},{"w":"SHAPE","a":"形状","c":"颜色形状"},{"w":"ONE","a":"一","c":"数字时间"},{"w":"TWO","a":"二","c":"数字时间"},{"w":"THREE","a":"三","c":"数字时间"},{"w":"FOUR","a":"四","c":"数字时间"},{"w":"FIVE","a":"五","c":"数字时间"},{"w":"SIX","a":"六","c":"数字时间"},{"w":"SEVEN","a":"七","c":"数字时间"},{"w":"EIGHT","a":"八","c":"数字时间"},{"w":"NINE","a":"九","c":"数字时间"},{"w":"TEN","a":"十","c":"数字时间"},{"w":"MORNING","a":"早上","c":"数字时间"},{"w":"AFTERNOON","a":"下午","c":"数字时间"},{"w":"EVENING","a":"晚上","c":"数字时间"},{"w":"NIGHT","a":"夜晚","c":"数字时间"},{"w":"TODAY","a":"今天","c":"数字时间"},{"w":"TOMORROW","a":"明天","c":"数字时间"},{"w":"YESTERDAY","a":"昨天","c":"数字时间"},{"w":"WEEK","a":"星期","c":"数字时间"},{"w":"MONTH","a":"月","c":"数字时间"},{"w":"YEAR","a":"年","c":"数字时间"},{"w":"HEAD","a":"头","c":"身体"},{"w":"FACE","a":"脸","c":"身体"},{"w":"EYE","a":"眼睛","c":"身体"},{"w":"EAR","a":"耳朵","c":"身体"},{"w":"NOSE","a":"鼻子","c":"身体"},{"w":"MOUTH","a":"嘴巴","c":"身体"},{"w":"TOOTH","a":"牙齿","c":"身体"},{"w":"NECK","a":"脖子","c":"身体"},{"w":"ARM","a":"手臂","c":"身体"},{"w":"HAND","a":"手","c":"身体"},{"w":"FINGER","a":"手指","c":"身体"},{"w":"LEG","a":"腿","c":"身体"},{"w":"FOOT","a":"脚","c":"身体"},{"w":"TOE","a":"脚趾","c":"身体"},{"w":"HAIR","a":"头发","c":"身体"},{"w":"BACK","a":"背部","c":"身体"},{"w":"KNEE","a":"膝盖","c":"身体"},{"w":"HEART","a":"心脏","c":"身体"},{"w":"BODY","a":"身体","c":"身体"},{"w":"SMILE","a":"微笑","c":"身体"},{"w":"SHIRT","a":"衬衫","c":"衣物"},{"w":"T-SHIRT","a":"T恤","c":"衣物"},{"w":"COAT","a":"外套","c":"衣物"},{"w":"JACKET","a":"夹克","c":"衣物"},{"w":"DRESS","a":"连衣裙","c":"衣物"},{"w":"SKIRT","a":"裙子","c":"衣物"},{"w":"PANTS","a":"裤子","c":"衣物"},{"w":"SHORTS","a":"短裤","c":"衣物"},{"w":"SHOES","a":"鞋子","c":"衣物"},{"w":"SOCKS","a":"袜子","c":"衣物"},{"w":"HAT","a":"帽子","c":"衣物"},{"w":"CAP","a":"鸭舌帽","c":"衣物"},{"w":"GLOVES","a":"手套","c":"衣物"},{"w":"SCARF","a":"围巾","c":"衣物"},{"w":"BELT","a":"腰带","c":"衣物"},{"w":"POCKET","a":"口袋","c":"衣物"},{"w":"BUTTON","a":"纽扣","c":"衣物"},{"w":"WEAR","a":"穿","c":"衣物"},{"w":"CLEAN","a":"干净的","c":"衣物"},{"w":"DIRTY","a":"脏的","c":"衣物"},{"w":"CAR","a":"汽车","c":"交通"},{"w":"BUS","a":"公共汽车","c":"交通"},{"w":"TRAIN","a":"火车","c":"交通"},{"w":"PLANE","a":"飞机","c":"交通"},{"w":"BOAT","a":"船","c":"交通"},{"w":"SHIP","a":"轮船","c":"交通"},{"w":"BIKE","a":"自行车","c":"交通"},{"w":"TAXI","a":"出租车","c":"交通"},{"w":"TRUCK","a":"卡车","c":"交通"},{"w":"SUBWAY","a":"地铁","c":"交通"},{"w":"ROAD","a":"道路","c":"交通"},{"w":"STREET","a":"街道","c":"交通"},{"w":"BRIDGE","a":"桥","c":"交通"},{"w":"STATION","a":"车站","c":"交通"},{"w":"AIRPORT","a":"机场","c":"交通"},{"w":"DRIVER","a":"司机","c":"交通"},{"w":"TICKET","a":"票","c":"交通"},{"w":"TRAVEL","a":"旅行","c":"交通"},{"w":"STOP","a":"停止","c":"交通"},{"w":"GO","a":"出发","c":"交通"},{"w":"SUN","a":"太阳","c":"自然天气"},{"w":"MOON","a":"月亮","c":"自然天气"},{"w":"STAR","a":"星星","c":"自然天气"},{"w":"SKY","a":"天空","c":"自然天气"},{"w":"CLOUD","a":"云","c":"自然天气"},{"w":"RAIN","a":"雨","c":"自然天气"},{"w":"SNOW","a":"雪","c":"自然天气"},{"w":"WIND","a":"风","c":"自然天气"},{"w":"TREE","a":"树","c":"自然天气"},{"w":"FLOWER","a":"花","c":"自然天气"},{"w":"GRASS","a":"草","c":"自然天气"},{"w":"RIVER","a":"河流","c":"自然天气"},{"w":"SEA","a":"海洋","c":"自然天气"},{"w":"MOUNTAIN","a":"山","c":"自然天气"},{"w":"FOREST","a":"森林","c":"自然天气"},{"w":"EARTH","a":"地球","c":"自然天气"},{"w":"WEATHER","a":"天气","c":"自然天气"},{"w":"SUNNY","a":"晴朗的","c":"自然天气"},{"w":"RAINY","a":"下雨的","c":"自然天气"},{"w":"CLOUDY","a":"多云的","c":"自然天气"},{"w":"DOOR","a":"门","c":"家居"},{"w":"WINDOW","a":"窗户","c":"家居"},{"w":"TABLE","a":"桌子","c":"家居"},{"w":"BED","a":"床","c":"家居"},{"w":"SOFA","a":"沙发","c":"家居"},{"w":"LAMP","a":"灯","c":"家居"},{"w":"CLOCK","a":"时钟","c":"家居"},{"w":"MIRROR","a":"镜子","c":"家居"},{"w":"KITCHEN","a":"厨房","c":"家居"},{"w":"BATHROOM","a":"浴室","c":"家居"},{"w":"BEDROOM","a":"卧室","c":"家居"},{"w":"GARDEN","a":"花园","c":"家居"},{"w":"FLOOR","a":"地板","c":"家居"},{"w":"WALL","a":"墙","c":"家居"},{"w":"KEY","a":"钥匙","c":"家居"},{"w":"BOX","a":"盒子","c":"家居"},{"w":"TOY","a":"玩具","c":"家居"},{"w":"PHONE","a":"电话","c":"家居"},{"w":"COMPUTER","a":"电脑","c":"家居"},{"w":"RUN","a":"跑","c":"动作"},{"w":"WALK","a":"走","c":"动作"},{"w":"JUMP","a":"跳","c":"动作"},{"w":"SIT","a":"坐","c":"动作"},{"w":"STAND","a":"站","c":"动作"},{"w":"EAT","a":"吃","c":"动作"},{"w":"SLEEP","a":"睡觉","c":"动作"},{"w":"WAKE","a":"醒来","c":"动作"},{"w":"OPEN","a":"打开","c":"动作"},{"w":"CLOSE","a":"关闭","c":"动作"},{"w":"LOOK","a":"看","c":"动作"},{"w":"LISTEN","a":"听","c":"动作"},{"w":"SPEAK","a":"说","c":"动作"},{"w":"SING","a":"唱","c":"动作"},{"w":"DANCE","a":"跳舞","c":"动作"},{"w":"PLAY","a":"玩","c":"动作"},{"w":"DRAW","a":"画画","c":"动作"},{"w":"WASH","a":"清洗","c":"动作"},{"w":"HELP","a":"帮助","c":"动作"},{"w":"BIG","a":"大的","c":"形容词"},{"w":"SMALL","a":"小的","c":"形容词"},{"w":"TALL","a":"高的","c":"形容词"},{"w":"SHORT","a":"矮的","c":"形容词"},{"w":"LONG","a":"长的","c":"形容词"},{"w":"FAST","a":"快的","c":"形容词"},{"w":"SLOW","a":"慢的","c":"形容词"},{"w":"HAPPY","a":"开心的","c":"形容词"},{"w":"SAD","a":"伤心的","c":"形容词"},{"w":"ANGRY","a":"生气的","c":"形容词"},{"w":"GOOD","a":"好的","c":"形容词"},{"w":"BAD","a":"坏的","c":"形容词"},{"w":"NEW","a":"新的","c":"形容词"},{"w":"OLD","a":"旧的","c":"形容词"},{"w":"YOUNG","a":"年轻的","c":"形容词"},{"w":"BEAUTIFUL","a":"漂亮的","c":"形容词"},{"w":"STRONG","a":"强壮的","c":"形容词"},{"w":"WEAK","a":"虚弱的","c":"形容词"},{"w":"EASY","a":"容易的","c":"形容词"},{"w":"DIFFICULT","a":"困难的","c":"形容词"},{"w":"BALL","a":"球","c":"运动娱乐"},{"w":"FOOTBALL","a":"足球","c":"运动娱乐"},{"w":"BASKETBALL","a":"篮球","c":"运动娱乐"},{"w":"TENNIS","a":"网球","c":"运动娱乐"},{"w":"SWIM","a":"游泳","c":"运动娱乐"},{"w":"RIDE","a":"骑","c":"运动娱乐"},{"w":"GAME","a":"游戏","c":"运动娱乐"},{"w":"MUSIC","a":"音乐","c":"运动娱乐"},{"w":"SONG","a":"歌曲","c":"运动娱乐"},{"w":"STORY","a":"故事","c":"运动娱乐"},{"w":"PICTURE","a":"图片","c":"运动娱乐"},{"w":"MOVIE","a":"电影","c":"运动娱乐"},{"w":"PARTY","a":"聚会","c":"运动娱乐"},{"w":"GIFT","a":"礼物","c":"运动娱乐"},{"w":"WIN","a":"赢","c":"运动娱乐"},{"w":"TEAM","a":"队伍","c":"运动娱乐"},{"w":"COACH","a":"教练","c":"运动娱乐"},{"w":"PLAYER","a":"运动员","c":"运动娱乐"},{"w":"FUN","a":"有趣","c":"运动娱乐"},{"w":"FRIEND","a":"朋友","c":"运动娱乐"},{"w":"HELLO","a":"你好","c":"日常用语"},{"w":"GOODBYE","a":"再见","c":"日常用语"}];
+let state=JSON.parse(localStorage.getItem("junjunEnglishV14")||localStorage.getItem("junjunEnglishV14")||localStorage.getItem("junjunEnglishV1")||'{"stars":0,"phonics":false,"story":false,"wins":0,"correct":0,"attempts":0,"learned":[],"wrong":[]}');
+state.correct=state.correct||0; state.attempts=state.attempts||0; state.learned=state.learned||[]; state.wrong=state.wrong||[];
+let current=null, deck=[], lastWord="";
+function save(){localStorage.setItem("junjunEnglishV14",JSON.stringify(state));render()}
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function refillDeck(){deck=shuffle(words.map((_,i)=>i));if(words[deck[deck.length-1]].w===lastWord&&deck.length>1)[deck[deck.length-1],deck[deck.length-2]]=[deck[deck.length-2],deck[deck.length-1]]}
+function pickIndex(){
+ if(state.wrong.length&&Math.random()<0.35) return state.wrong.shift();
+ if(!deck.length) refillDeck();
+ let idx=deck.pop();
+ if(words[idx].w===lastWord&&deck.length){deck.unshift(idx);idx=deck.pop()}
+ return idx;
+}
 function next(){
- current=words[Math.floor(Math.random()*words.length)];
+ const idx=pickIndex(); current={...words[idx],idx}; lastWord=current.w;
  document.getElementById("word").textContent=current.w;
+ const same=words.filter((x,i)=>i!==idx&&x.c===current.c&&x.a!==current.a);
+ const pool=(same.length>=2?same:words.filter((x,i)=>i!==idx&&x.a!==current.a));
+ const wrong=shuffle(pool).slice(0,2).map(x=>x.a);
  const box=document.getElementById("answers"); box.innerHTML="";
- shuffle([current.a,...current.x]).forEach(v=>{
-   const b=document.createElement("button"); b.className="ans"; b.textContent=v;
-   b.onclick=()=>answer(v,b); box.appendChild(b);
- });
+ shuffle([current.a,...wrong]).forEach(v=>{const b=document.createElement("button");b.className="ans";b.textContent=v;b.onclick=()=>answer(v,b);box.appendChild(b)});
 }
 function answer(v,b){
+ state.attempts++;
  if(v===current.a){
-   state.wins++; if(state.wins<=5) state.stars+=2; document.getElementById("msg").textContent="🎉 答对！怪物受到攻击！";
+   state.correct++; state.wins++; if(state.wins<=5) state.stars+=2;
+   if(!state.learned.includes(current.idx)) state.learned.push(current.idx);
+   state.wrong=state.wrong.filter(i=>i!==current.idx);
+   document.getElementById("msg").textContent="🎉 答对！怪物受到攻击！";
    document.getElementById("monster").textContent=state.wins>=5?"💥":"😵";
    save(); setTimeout(()=>{document.getElementById("monster").textContent="👾";next()},650);
  }else{
-   document.getElementById("msg").textContent="再想一想，你可以的！";
-   b.style.opacity=".35";
+   if(!state.wrong.includes(current.idx)) state.wrong.push(current.idx);
+   document.getElementById("msg").textContent="再想一想，这个错题稍后还会出现！"; b.style.opacity=".35"; b.disabled=true; save();
  }
 }
 document.querySelectorAll(".phonics-link").forEach(a=>a.addEventListener("click",()=>{if(!state.phonics){state.phonics=true;state.stars+=5;save()}}));
 document.querySelectorAll(".story-link").forEach(a=>a.addEventListener("click",()=>{if(!state.story){state.story=true;state.stars+=5;save()}}));
-document.querySelectorAll(".task").forEach(t=>t.onclick=()=>{
- const k=t.dataset.task;
- if(k==="phonics") document.querySelector(".phonics-link").click();
- if(k==="story") document.querySelector(".story-link").click();
- if(k==="game") document.getElementById("battle").scrollIntoView({behavior:"smooth"});
-});
-document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active");
- window.scrollTo({top:0,behavior:"smooth"});
-});
-document.getElementById("reset").onclick=()=>{state={stars:0,phonics:false,story:false,wins:0};save();next()};
+document.querySelectorAll(".task").forEach(t=>t.onclick=()=>{const k=t.dataset.task;if(k==="phonics")document.querySelector(".phonics-link").click();if(k==="story")document.querySelector(".story-link").click();if(k==="game")document.getElementById("battle").scrollIntoView({behavior:"smooth"})});
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.page).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})});
+document.getElementById("reset").onclick=()=>{state={stars:0,phonics:false,story:false,wins:0,correct:0,attempts:0,learned:[],wrong:[]};save();refillDeck();next()};
 function render(){
  document.getElementById("stars").textContent=state.stars;
- const level=Math.floor(state.stars/20)+1; document.getElementById("level").textContent=level;
+ const level=Math.floor(state.stars/20)+1;document.getElementById("level").textContent=level;
  const flags={phonics:state.phonics,game:state.wins>=5,story:state.story};
  document.querySelectorAll(".task").forEach(t=>t.classList.toggle("done",flags[t.dataset.task]));
  document.getElementById("pPhonics").textContent=state.phonics?"已完成":"未完成";
  document.getElementById("pStory").textContent=state.story?"已完成":"未完成";
  document.getElementById("pGame").textContent=Math.min(state.wins,5)+" / 5";
  document.getElementById("pStars").textContent=state.stars;
+ document.getElementById("pTotal").textContent=words.length;
+ document.getElementById("pLearned").textContent=state.learned.length;
+ document.getElementById("pAccuracy").textContent=(state.attempts?Math.round(state.correct/state.attempts*100):0)+"%";
  document.getElementById("bar").style.width=(state.stars%20)/20*100+"%";
  document.getElementById("progressText").textContent="再取得 "+(20-state.stars%20)+" 颗星升到下一级";
 }
-render();next();
+render();refillDeck();next();
 </script>
 <script>
 if ("serviceWorker" in navigator) {

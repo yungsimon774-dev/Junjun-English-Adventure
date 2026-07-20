@@ -1,8 +1,8 @@
 {
-  "name": "峻峻英语大冒险",
+  "name": "峻峻英语大冒险 V1.4 简体正式版",
   "short_name": "峻峻英语",
   "description": "外接成熟自然拼读、故事与游戏资源的儿童英语冒险 App",
-  "lang": "zh-Hans",
+  "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -19,5 +19,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "id": "junjun-english-v1-4"
 }
