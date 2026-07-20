@@ -1,8 +1,8 @@
 {
-  "name": "峻峻英語大冒險",
-  "short_name": "峻峻英語",
-  "description": "外接成熟自然拼讀、故事與遊戲資源的兒童英語冒險 App",
-  "lang": "zh-Hant",
+  "name": "峻峻英语大冒险",
+  "short_name": "峻峻英语",
+  "description": "外接成熟自然拼读、故事与游戏资源的儿童英语冒险 App",
+  "lang": "zh-Hans",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
